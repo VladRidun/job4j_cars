@@ -44,12 +44,14 @@ public class UserRepository {
     public void update(User user) {
         Session session = sf.openSession();
         try {
+            session.beginTransaction();
             session.createQuery(
                             "UPDATE auto_user SET login = :fLogin, password = :FPass WHERE id = :fId")
                     .setParameter("fLogin", user.getLogin())
                     .setParameter("fPass", user.getPassword())
                     .setParameter("fId", user.getId())
                     .executeUpdate();
+            session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
         } finally {
@@ -65,10 +67,12 @@ public class UserRepository {
     public void delete(int userId) {
         Session session = sf.openSession();
         try {
+            session.beginTransaction();
             session.createQuery(
                             "DELETE auto_user  WHERE id = :fId")
                     .setParameter("fId", userId)
                     .executeUpdate();
+            session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
         } finally {
