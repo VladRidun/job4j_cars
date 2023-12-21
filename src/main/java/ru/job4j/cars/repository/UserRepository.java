@@ -83,7 +83,7 @@ public class UserRepository {
      */
     public List<User> findAllOrderById() {
         Session session = sf.openSession();
-        List<User> userList = null;
+        List<User> userList = new ArrayList<>();
         try {
             session.beginTransaction();
             userList = session.createQuery("from User ORDER BY id", User.class).list();
@@ -103,20 +103,19 @@ public class UserRepository {
      */
     public Optional<User> findById(int userId) {
         Session session = sf.openSession();
-        Optional<User> optional;
+        Optional<User> optional = Optional.empty();
         try {
             session.beginTransaction();
             optional = session.createQuery(
                             "FROM User  WHERE id = :fId", User.class)
                     .setParameter("fId", userId).uniqueResultOptional();
             session.getTransaction().commit();
-            return optional;
         } catch (Exception e) {
             session.getTransaction().rollback();
         } finally {
             session.close();
         }
-        return null;
+        return optional;
     }
 
     /**
@@ -127,7 +126,7 @@ public class UserRepository {
      */
     public List<User> findByLikeLogin(String key) {
         Session session = sf.openSession();
-        List<User> userList = null;
+        List<User> userList = new ArrayList<>();
         try {
             session.beginTransaction();
             userList = session.createQuery(
@@ -135,13 +134,12 @@ public class UserRepository {
                     .setParameter("fKey", "%" + key + "%")
                     .list();
             session.getTransaction().commit();
-            return userList;
         } catch (Exception e) {
             session.getTransaction().rollback();
         } finally {
             session.close();
         }
-        return null;
+        return userList;
     }
 
     /**
@@ -152,7 +150,7 @@ public class UserRepository {
      */
     public Optional<User> findByLogin(String login) {
         Session session = sf.openSession();
-        Optional<User> optional;
+        Optional<User> optional = Optional.empty();
         try {
             session.beginTransaction();
             optional = session.createQuery(
@@ -160,12 +158,11 @@ public class UserRepository {
                     .setParameter("FLogin", login)
                     .uniqueResultOptional();
             session.getTransaction().commit();
-            return optional;
         } catch (Exception e) {
             session.getTransaction().rollback();
         } finally {
             session.close();
         }
-        return null;
+        return optional;
     }
 }
