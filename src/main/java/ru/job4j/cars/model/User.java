@@ -10,7 +10,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "auto_user")
 @Data
-@Builder(builderMethodName = "of")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class User {
     @Id
