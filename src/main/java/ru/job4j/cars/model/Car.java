@@ -16,6 +16,11 @@ public class Car {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private int id;
+    private String brand;
+    private String model;
+    private String vinNumber;
+    private String colour;
+    private String bodyType;
 
     @ManyToOne
     @JoinColumn(name = "engine_id", foreignKey = @ForeignKey(name = "ENGINE_ID_FK"))

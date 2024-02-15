@@ -21,9 +21,17 @@ public class Post {
     private String description;
     private LocalDateTime created = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
 
+    @OneToOne
+    @JoinColumn(name = "auto_photo_id")
+    private AutoPhoto autoPhoto;
+
     @ManyToOne
     @JoinColumn(name = "auto_user_id")
     private User user;
+
+    @OneToOne
+    @JoinColumn(name = "car_id")
+    private Car car;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "auto_post_id")
