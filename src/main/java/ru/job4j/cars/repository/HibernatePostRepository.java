@@ -6,6 +6,8 @@ import ru.job4j.cars.model.Car;
 import ru.job4j.cars.model.Post;
 import ru.job4j.cars.model.User;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -18,19 +20,21 @@ public class HibernatePostRepository implements PostRepository {
     @Override
     public List<Post> getLastDayPosts() {
         return crudRepository.query(
-                "from p Post where p.created = localtimestamp", Post.class);
+                "select from p Post where p.created >= :fTime", Post.class,
+                Map.of("fTime", Timestamp.valueOf(LocalDateTime.now()))
+        );
     }
 
     @Override
     public List<Post> getPostsWithPhoto() {
         return crudRepository.query(
-                "from p Post where p.autoPhoto IS NOT NULL", Post.class);
+                "select from p Post where p.autoPhotos is NOT EMPTY", Post.class);
     }
 
     @Override
     public List<Post> getPostsWithBrand(String brand) {
         return crudRepository.query(
-                "from p Post where brand = :fBrand", Post.class,
+                "select from p Post where p.brand = :fBrand", Post.class,
                 Map.of("fBrand", brand)
         );
     }
