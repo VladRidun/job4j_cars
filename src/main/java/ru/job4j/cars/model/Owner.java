@@ -17,6 +17,4 @@ public class Owner {
 
     private String name;
 
-    private int userId;
-
 }
