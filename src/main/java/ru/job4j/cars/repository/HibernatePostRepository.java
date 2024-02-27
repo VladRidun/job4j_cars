@@ -21,20 +21,20 @@ public class HibernatePostRepository implements PostRepository {
     public List<Post> getLastDayPosts() {
         return crudRepository.query(
                 "select from p Post where p.created >= :fTime", Post.class,
-                Map.of("fTime", Timestamp.valueOf(LocalDateTime.now()))
-        );
+                Map.of("fTime", Timestamp.valueOf(LocalDateTime.now().minusDays(1))
+                ));
     }
 
     @Override
     public List<Post> getPostsWithPhoto() {
         return crudRepository.query(
-                "select from p Post where p.autoPhotos is NOT EMPTY", Post.class);
+                "select from p Post where p.autoPhotos.size != 0", Post.class);
     }
 
     @Override
     public List<Post> getPostsWithBrand(String brand) {
         return crudRepository.query(
-                "select from p Post where p.brand = :fBrand", Post.class,
+                "select from p Post where p.car.brand = :fBrand", Post.class,
                 Map.of("fBrand", brand)
         );
     }
