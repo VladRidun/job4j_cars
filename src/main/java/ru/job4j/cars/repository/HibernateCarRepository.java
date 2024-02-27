@@ -34,7 +34,7 @@ public class HibernateCarRepository implements CarRepository {
 
     @Override
     public List<Car> findAll() {
-        return crudRepository.query("select distinct t from Car t JOIN FETCH t.engine order by t.id", Car.class);
+        return crudRepository.query("SELECT DISTINCT c from Car c LEFT JOIN FETCH c.owners order by c.id", Car.class);
     }
 
     @Override
