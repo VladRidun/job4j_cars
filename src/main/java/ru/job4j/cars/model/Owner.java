@@ -19,4 +19,7 @@ public class Owner {
     private int id;
     @EqualsAndHashCode.Include
     private String name;
+
+    @OneToMany(mappedBy = "car")
+    private List<HistoryOwner> historyOwnerList = new ArrayList<>();
 }
