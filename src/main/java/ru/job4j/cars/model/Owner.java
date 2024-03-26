@@ -20,6 +20,6 @@ public class Owner {
     @EqualsAndHashCode.Include
     private String name;
 
-    @OneToMany(mappedBy = "car")
+    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL)
     private List<HistoryOwner> historyOwnerList = new ArrayList<>();
 }

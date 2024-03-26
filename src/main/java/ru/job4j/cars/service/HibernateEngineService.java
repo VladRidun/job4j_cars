@@ -10,7 +10,7 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class HibernateEngineService implements EngineService {
-    private EngineRepository engineRepository;
+    private final EngineRepository engineRepository;
 
     @Override
     public Engine create(Engine engine) {

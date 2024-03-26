@@ -1,10 +1,7 @@
 package ru.job4j.cars.model;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import lombok.EqualsAndHashCode.Include;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +10,8 @@ import java.util.List;
 @Table(name = "auto_user")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,4 +29,10 @@ public class User {
             inverseJoinColumns = { @JoinColumn(name = "post_id") }
     )
     private List<Post> participates = new ArrayList<>();
+
+    public User(String login, String password) {
+    }
+
+    public User(int id) {
+    }
 }

@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 @AllArgsConstructor
 public class HibernateEngineRepository implements EngineRepository {
-    private CrudRepository crudRepository;
+    private final CrudRepository crudRepository;
 
     @Override
     public Engine create(Engine engine) {

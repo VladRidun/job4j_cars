@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 @AllArgsConstructor
 public class HibernateAutoPhotoRepository implements AutoPhotoRepository {
-    private CrudRepository crudRepository;
+    private final CrudRepository crudRepository;
 
     @Override
     public AutoPhoto save(AutoPhoto file) {

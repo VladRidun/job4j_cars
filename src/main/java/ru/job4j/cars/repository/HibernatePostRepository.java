@@ -2,20 +2,48 @@ package ru.job4j.cars.repository;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
-import ru.job4j.cars.model.Car;
+import ru.job4j.cars.model.Owner;
 import ru.job4j.cars.model.Post;
-import ru.job4j.cars.model.User;
-
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 @AllArgsConstructor
 public class HibernatePostRepository implements PostRepository {
 
-    final CrudRepository crudRepository;
+    private final CrudRepository crudRepository;
+
+    @Override
+    public Post create(Post post) {
+        crudRepository.run(session -> session.persist(post));
+        return post;
+    }
+
+    @Override
+    public void update(Post post) {
+        crudRepository.run(session -> session.merge(post));
+    }
+
+    @Override
+    public void delete(int postId) {
+        crudRepository.run(
+                "delete from Post where id = :fId",
+                Map.of("fId", postId)
+        );
+    }
+
+    @Override
+    public List<Post> findAllOrderById() {
+        return crudRepository.query("from Post p join fetch p.car join fetch p.user p order by p.id", Post.class);
+    }
+
+    @Override
+    public Optional<Post> findById(int taskId) {
+        return Optional.empty();
+    }
 
     @Override
     public List<Post> getLastDayPosts() {

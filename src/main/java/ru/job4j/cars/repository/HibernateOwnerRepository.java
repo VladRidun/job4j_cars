@@ -2,7 +2,6 @@ package ru.job4j.cars.repository;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
-import ru.job4j.cars.model.Car;
 import ru.job4j.cars.model.Owner;
 
 import java.util.List;
@@ -12,7 +11,7 @@ import java.util.Optional;
 @Repository
 @AllArgsConstructor
 public class HibernateOwnerRepository implements OwnerRepository {
-    private CrudRepository crudRepository;
+    private final CrudRepository crudRepository;
 
     @Override
     public Owner create(Owner owner) {

@@ -3,11 +3,14 @@ package ru.job4j.cars.model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.EqualsAndHashCode.Include;
+import lombok.ToString;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Entity
 @Table(name = "auto_post")
@@ -20,12 +23,12 @@ public class Post {
     private Integer id;
     private String description;
     private LocalDateTime created = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
-
-    @OneToOne
+    private Integer price;
+    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "car_id")
     private Car car;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "auto_photo_id")
     private List<AutoPhoto> autoPhotos = new ArrayList<>();
 
@@ -36,4 +39,5 @@ public class Post {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "auto_post_id")
     private List<PriceHistory> priceHistories = new ArrayList<>();
+
 }

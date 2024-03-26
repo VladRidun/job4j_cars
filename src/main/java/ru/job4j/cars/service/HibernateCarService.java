@@ -11,7 +11,7 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class HibernateCarService implements CarService {
-    private CarRepository carRepository;
+    private final CarRepository carRepository;
 
     @Override
     public Car create(Car car) {

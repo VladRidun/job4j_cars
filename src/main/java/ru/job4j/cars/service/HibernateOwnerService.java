@@ -11,7 +11,7 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class HibernateOwnerService implements OwnerService {
-    private OwnerRepository ownerRepository;
+    private final OwnerRepository ownerRepository;
 
     @Override
     public Owner create(Owner owner) {

@@ -1,20 +1,17 @@
 package ru.job4j.cars.repository;
 
 import lombok.AllArgsConstructor;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 import ru.job4j.cars.model.User;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 @Repository
 @AllArgsConstructor
-public class HibernateUserRepository {
-    private CrudRepository crudRepository;
+public class HibernateUserRepository implements UserRepository {
+
+    private final CrudRepository crudRepository;
 
     /**
      * Сохранить в базе.
@@ -22,9 +19,9 @@ public class HibernateUserRepository {
      * @param user пользователь.
      * @return пользователь с id.
      */
-    public User create(User user) {
+    public Optional<User> create(User user) {
         crudRepository.run(session -> session.persist(user));
-        return user;
+        return Optional.of(user);
     }
 
     /**
@@ -86,9 +83,10 @@ public class HibernateUserRepository {
      * @param login login.
      * @return Optional or user.
      */
-    public Optional<User> findByLogin(String login) {
+    public Optional<User> findByLoginAndPassword(String login, String password) {
         return crudRepository.optional(
-                        "from User WHERE login  = :FLogin", User.class,
-                Map.of("FLogin", login));
+                        "from User WHERE login  = :FLogin and password = :FPassword", User.class,
+                Map.of("FLogin", login,
+                        "FPassword", password));
     }
 }

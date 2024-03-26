@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 @AllArgsConstructor
 public class HibernateCarRepository implements CarRepository {
-    private CrudRepository crudRepository;
+    private final CrudRepository crudRepository;
 
     @Override
     public Car create(Car car) {
