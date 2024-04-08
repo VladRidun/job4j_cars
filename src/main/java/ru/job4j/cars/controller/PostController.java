@@ -4,15 +4,18 @@ import lombok.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import ru.job4j.cars.dto.AutoPhotoDto;
+import ru.job4j.cars.model.AutoPhoto;
 import ru.job4j.cars.model.Car;
-import ru.job4j.cars.model.Engine;
 import ru.job4j.cars.model.Post;
 import ru.job4j.cars.model.User;
+import ru.job4j.cars.service.AutoPhotoService;
 import ru.job4j.cars.service.PostService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.List;
+import java.io.IOException;
 
 @Controller
 @AllArgsConstructor
@@ -20,6 +23,7 @@ import java.util.List;
 public class PostController {
 
     private PostService postService;
+    private final AutoPhotoService photoService;
 
     @GetMapping("/{postId}")
     public String getPostById(Model model, @PathVariable int postId, HttpServletRequest request) {
@@ -36,16 +40,16 @@ public class PostController {
 
     @GetMapping()
     public String getAll(Model model) {
-        model.addAttribute("post",  postService.findAllOrderById());
+        model.addAttribute("posts", postService.findAllOrderById());
         return "posts/list";
     }
 
     @PostMapping("/create")
-    public String create(@ModelAttribute Post post, @ModelAttribute Car car, @ModelAttribute Engine engine, HttpSession session) {
+    public String create(@ModelAttribute Post post, @ModelAttribute Car car, @RequestParam MultipartFile file, HttpSession session) throws IOException {
         var user = (User) session.getAttribute("user");
         post.setUser(user);
         post.setCar(car);
-        postService.create(post);
+        postService.create(post, new AutoPhotoDto(file.getOriginalFilename(), file.getBytes()));
         return "redirect:/posts";
     }
 
@@ -64,19 +68,25 @@ public class PostController {
     @GetMapping("/edit/{id}")
     public String getEditPage(@PathVariable int id, Model model) {
         var postOptional = postService.findById(id);
+        var file = postOptional.get().getAutoPhoto().getId();
         if (postOptional.isEmpty()) {
-            model.addAttribute("message", "Задание не найдено");
+            model.addAttribute("message", "Объявление не найдено");
             return "errors/404";
         }
         model.addAttribute("post", postOptional.get());
+        model.addAttribute("file", postOptional.get());
         return "posts/update";
     }
 
     @PostMapping("/update")
-    public String update(@ModelAttribute Post post, HttpSession session, @RequestParam List<Integer> categoriesId) {
+    public String update(@ModelAttribute Post post, @RequestParam MultipartFile file, HttpSession session) throws IOException {
         var user = (User) session.getAttribute("user");
         post.setUser(user);
-        postService.update(post);
+        if ((!file.isEmpty())) {
+            postService.update(post, new AutoPhotoDto(file.getOriginalFilename(), file.getBytes()));
+        } else {
+            postService.update(post);
+        }
         return "redirect:/posts";
     }
 
@@ -93,14 +103,14 @@ public class PostController {
     }
 
     @GetMapping("/done/{id}")
-    public String getPageTaskIsDone(Model model, @PathVariable int id) {
+    public String getPageTaskIsDone(Model model, @RequestParam MultipartFile file, @PathVariable int id) throws IOException {
         var taskOptional = postService.findById(id);
         if (taskOptional.isEmpty()) {
-            model.addAttribute("message", "Задание не найдено");
+            model.addAttribute("message", "Объявление не найдено");
             return "errors/404";
         }
         var postDto = taskOptional.get();
-        postService.update(postDto);
+        postService.update(postDto, new AutoPhotoDto(file.getOriginalFilename(), file.getBytes()));
         return "redirect:/posts/completed";
     }
 }

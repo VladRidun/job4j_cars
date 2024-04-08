@@ -21,18 +21,4 @@ public class User {
     private String login;
     @Column(name = "password")
     private String password;
-
-    @ManyToMany
-    @JoinTable(
-            name = "participates",
-            joinColumns = { @JoinColumn(name = "user_id") },
-            inverseJoinColumns = { @JoinColumn(name = "post_id") }
-    )
-    private List<Post> participates = new ArrayList<>();
-
-    public User(String login, String password) {
-    }
-
-    public User(int id) {
-    }
 }

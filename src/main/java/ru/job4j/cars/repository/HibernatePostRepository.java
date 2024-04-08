@@ -2,7 +2,6 @@ package ru.job4j.cars.repository;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
-import ru.job4j.cars.model.Owner;
 import ru.job4j.cars.model.Post;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -37,12 +36,14 @@ public class HibernatePostRepository implements PostRepository {
 
     @Override
     public List<Post> findAllOrderById() {
-        return crudRepository.query("from Post p join fetch p.car join fetch p.user p order by p.id", Post.class);
+        return crudRepository.query("from Post p join fetch p.car join fetch p.user join fetch p.autoPhoto p order by p.id", Post.class);
     }
 
     @Override
     public Optional<Post> findById(int taskId) {
-        return Optional.empty();
+        return crudRepository.optional("FROM Post p join fetch p.car WHERE p.id = :fId", Post.class,
+                Map.of("fId", taskId)
+        );
     }
 
     @Override

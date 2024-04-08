@@ -5,6 +5,5 @@ create table car
    model varchar,
    vinNumber varchar,
    colour varchar,
-   bodyType varchar,
-   engine_id  int not null unique references engine(id)
+   bodyType varchar
 );

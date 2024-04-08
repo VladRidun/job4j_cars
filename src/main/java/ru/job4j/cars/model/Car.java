@@ -23,11 +23,4 @@ public class Car {
     private String vinNumber;
     private String colour;
     private String bodyType;
-
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "engine_id", foreignKey = @ForeignKey(name = "ENGINE_ID_FK"))
-    private Engine engine;
-
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
-    private List<HistoryOwner> historyOwnerList = new ArrayList<>();
 }

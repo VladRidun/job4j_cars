@@ -20,7 +20,7 @@ public class HibernateAutoPhotoRepository implements AutoPhotoRepository {
 
     @Override
     public Optional<AutoPhoto> findById(int id) {
-        return crudRepository.optional("FROM AutoFoto WHERE id = :fId", AutoPhoto.class,
+        return crudRepository.optional("FROM AutoPhoto WHERE id = :fId", AutoPhoto.class,
                 Map.of("fId", id)
         );
     }

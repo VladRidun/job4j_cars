@@ -1,9 +1,6 @@
 package ru.job4j.cars.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -22,5 +19,7 @@ public class AutoPhoto {
     private String path;
 
     public AutoPhoto(String name, String path) {
+        this.name = name;
+        this.path = path;
     }
 }

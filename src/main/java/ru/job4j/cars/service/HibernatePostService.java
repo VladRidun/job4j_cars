@@ -2,6 +2,7 @@ package ru.job4j.cars.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.job4j.cars.dto.AutoPhotoDto;
 import ru.job4j.cars.model.Post;
 import ru.job4j.cars.repository.PostRepository;
 
@@ -13,14 +14,24 @@ import java.util.Optional;
 public class HibernatePostService implements PostService {
 
     private final PostRepository postRepository;
+    private final AutoPhotoService autoPhotoService;
 
     @Override
-    public Post create(Post post) {
+    public Post create(Post post, AutoPhotoDto photoDto) {
+        var photo = autoPhotoService.save(photoDto);
+        post.setAutoPhoto(photo);
         return postRepository.create(post);
     }
 
     @Override
     public void update(Post post) {
+        postRepository.update(post);
+    }
+
+    @Override
+    public void update(Post post, AutoPhotoDto photoDto) {
+        var photo = autoPhotoService.save(photoDto);
+        post.setAutoPhoto(photo);
         postRepository.update(post);
     }
 
@@ -36,7 +47,7 @@ public class HibernatePostService implements PostService {
 
     @Override
     public Optional<Post> findById(int taskId) {
-        return Optional.empty();
+        return postRepository.findById(taskId);
     }
 
     @Override

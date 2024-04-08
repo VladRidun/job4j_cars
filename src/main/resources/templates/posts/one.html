@@ -22,35 +22,40 @@
     <header th:insert="blocks/header :: header"></header>
     <div class="container">
         <table class="table">
+
             <thead>
             <tr>
                 <th class="col-1">#</th>
-                <th class="col-3">Название</th>
-                <th class="col-3">Описание</th>
-                <th class="col-3">Дата создания</th>
-                <th class="col-3">Выполнение</th>
+                <th class="col-3">Заголовок</th>
+                <th class="col-3">Фото</th>
+                <th class="col-3">Марка</th>
+                <th class="col-3">Модель</th>
+                <th class="col-3">Дата добаления</th>
+                <th class="col-3">Активное</th>
             </tr>
             </thead>
             <tbody>
-            <td><span th:text="${task.id}"></span></td>
-            <td><span th:text="${task.title}"></span></td>
-            <td><span th:text="${task.description}"></span></td>
-            <td><span th:text="${#temporals.format(task.created, 'HH:mm dd-MM-yyyy')}"></span></td>
-            <td><span th:if="${task.done}"><i class="bi bi-check-square"></i></span>
-                <span th:if="${!task.done}"><i class="bi bi-square"></i></span>
+            <td><span th:text="${post.id}"></span></td>
+            <td><span th:text="${post.title}"></span></td>
+            <td><img th:src="@{/photos/{/photoId}(photoId=${post.autoPhoto.id})}" class="w-100" alt="No image" ></span></td>
+            <td><span th:text="${post.car.brand}"></span></td>
+            <td><span th:text="${post.car.model}"></span></td>
+            <td><span th:text="${#temporals.format(post.created, 'HH:mm dd-MM-yyyy')}"></span></td>
+            <td><span th:if="${post.active}"><i class="bi bi-check-square"></i></span>
+                <span th:if="${!post.active}"><i class="bi bi-square"></i></span>
             </td>
-            </tr>
+            </div>
             </tbody>
         </table>
         <div class="mb-3 row">
             <div class="col-6"></div>
             <div class="col-6">
                 <div class="row">
-                    <div class="col-4"><a class="btn btn-danger w-100" th:href="@{/tasks/done/{id}(id=${task.id})}">Выполнить</a>
+                    <div class="col-4"><a class="btn btn-danger w-100" th:href="@{/posts/active/{id}(id=${post.id})}">В архив</a>
                     </div>
-                    <div class="col-4"><a class="btn btn-primary w-100" th:href="@{/tasks/edit/{id}(id=${task.id})}">Редактировать</a>
+                    <div class="col-4"><a class="btn btn-primary w-100" th:href="@{/posts/edit/{id}(id=${post.id})}">Редактировать</a>
                     </div>
-                    <div class="col-4"><a class="btn btn-danger w-100" th:href="@{/tasks/delete/{id}(id=${task.id})}">Удалить</a>
+                    <div class="col-4"><a class="btn btn-danger w-100" th:href="@{/posts/delete/{id}(id=${post.id})}">Удалить</a>
                     </div>
                 </div>
             </div>
