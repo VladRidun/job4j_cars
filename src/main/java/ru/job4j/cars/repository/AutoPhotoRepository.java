@@ -7,7 +7,7 @@ import java.util.Optional;
 public interface AutoPhotoRepository {
     AutoPhoto save(AutoPhoto file);
 
-    Optional<AutoPhoto> findById(int id);
+    Optional<AutoPhoto> findById(Long id);
 
-    void deleteById(int id);
+    void deleteById(Long id);
 }

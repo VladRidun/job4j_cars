@@ -3,6 +3,7 @@ package ru.job4j.cars.repository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ru.job4j.cars.model.User;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -20,8 +21,12 @@ public class HibernateUserRepository implements UserRepository {
      * @return пользователь с id.
      */
     public Optional<User> create(User user) {
-        crudRepository.run(session -> session.persist(user));
-        return Optional.of(user);
+        Optional<User> result = findByLoginAndPassword(user.getLogin(), user.getPassword());
+        if (!result.isEmpty()) {
+            return Optional.empty();
+        }
+        crudRepository.run(session -> session.save(user));
+        return Optional.ofNullable(user);
     }
 
     /**
@@ -38,10 +43,8 @@ public class HibernateUserRepository implements UserRepository {
      *
      * @param userId ID
      */
-    public void delete(int userId) {
-        crudRepository.run("delete from User WHERE id = :fId",
-                Map.of("fId", userId)
-        );
+    public void delete(Long userId) {
+        crudRepository.run("delete from User WHERE id = :fId", Map.of("fId", userId));
     }
 
     /**
@@ -58,10 +61,8 @@ public class HibernateUserRepository implements UserRepository {
      *
      * @return пользователь.
      */
-    public Optional<User> findById(int userId) {
-        return crudRepository.optional(
-                "FROM User  WHERE id = :fId", User.class,
-                Map.of("fId", userId));
+    public Optional<User> findById(Long userId) {
+        return crudRepository.optional("FROM User  WHERE id = :fId", User.class, Map.of("fId", userId));
     }
 
     /**
@@ -71,10 +72,7 @@ public class HibernateUserRepository implements UserRepository {
      * @return список пользователей.
      */
     public List<User> findByLikeLogin(String key) {
-        return crudRepository.query(
-                "from User where login LIKE :fKey ", User.class,
-                Map.of("fKey", "%" + key + "%")
-        );
+        return crudRepository.query("from User where login LIKE :fKey ", User.class, Map.of("fKey", "%" + key + "%"));
     }
 
     /**
@@ -84,9 +82,6 @@ public class HibernateUserRepository implements UserRepository {
      * @return Optional or user.
      */
     public Optional<User> findByLoginAndPassword(String login, String password) {
-        return crudRepository.optional(
-                        "from User WHERE login  = :FLogin and password = :FPassword", User.class,
-                Map.of("FLogin", login,
-                        "FPassword", password));
+        return crudRepository.optional("from User WHERE login  = :FLogin and password = :FPassword", User.class, Map.of("FLogin", login, "FPassword", password));
     }
 }

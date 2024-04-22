@@ -5,21 +5,20 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "auto_photo")
+@Table(name = "model")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class AutoPhoto {
+public class Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Long id;
-    private String name;
-    private String path;
 
-    public AutoPhoto(String name, String path) {
-        this.name = name;
-        this.path = path;
-    }
+    private String name;
+
+    @Column(name = "brand_id")
+    private int brandId;
+
 }

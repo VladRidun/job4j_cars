@@ -9,7 +9,7 @@ public interface AutoPhotoService {
 
     AutoPhoto save(AutoPhotoDto photoDto);
 
-    Optional<AutoPhotoDto> getPhotoById(int id);
+    Optional<AutoPhotoDto> getPhotoById(Long id);
 
-    void deleteById(int id);
+    void deleteById(Long id);
 }

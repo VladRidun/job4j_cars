@@ -6,25 +6,33 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ru.job4j.cars.model.Brand;
 import ru.job4j.cars.model.Car;
+import ru.job4j.cars.model.Model;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class HibernateCarRepositoryTest {
     private static SessionFactory sf;
     private static HibernateCarRepository carRepository;
+    private static HibernateBrandRepository brandRepository;
+    private static HibernateModelRepository modelRepository;
 
-    @BeforeAll
-    public static void initRepositories() {
+    @BeforeEach
+    public void initRepositories() {
         StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
                 .configure("hibernate_test.cfg.xml").build();
         sf = new MetadataSources(registry).buildMetadata().buildSessionFactory();
+        brandRepository = new HibernateBrandRepository(new CrudRepository(sf));
+        modelRepository = new HibernateModelRepository(new CrudRepository(sf));
         carRepository = new HibernateCarRepository(new CrudRepository(sf));
+        brandRepository.create(new Brand(1L, "Renault"));
+        modelRepository.create(new Model(1L, "Duster", 1));
     }
 
     @AfterEach
@@ -33,13 +41,13 @@ class HibernateCarRepositoryTest {
         try {
             session.beginTransaction();
             session.createQuery(
+                            "delete Brand")
+                    .executeUpdate();
+            session.createQuery(
+                            "delete Model")
+                    .executeUpdate();
+            session.createQuery(
                             "delete Car")
-                    .executeUpdate();
-            session.createQuery(
-                            "delete Engine")
-                    .executeUpdate();
-            session.createQuery(
-                            "delete Owner")
                     .executeUpdate();
             session.getTransaction().commit();
             session.close();
@@ -50,35 +58,44 @@ class HibernateCarRepositoryTest {
 
     @Test
     void whenCreateThenGetSameCarWithBrand() {
-        var car = Car.builder()
-                .brand("subaru")
-                .model("outback")
-                .vinNumber("Vin123")
-                .colour("black")
-                .bodyType("universal")
-                .build();
+        var car = new Car(1L,
+                brandRepository.findById(1L).get(),
+                modelRepository.findById(1L).get(),
+                "Vin123",
+                111111L,
+                2016,
+                null,
+                null,
+                null,
+                null);
         var carAdded = carRepository.create(car);
         assertThat(carAdded.getBrand()).isEqualTo(car.getBrand());
     }
 
     @Test
     void whenUpdateIsDone() {
-        var car1 = Car.builder()
-                .brand("subaru")
-                .model("outback")
-                .vinNumber("Vin123")
-                .colour("black")
-                .bodyType("universal")
-                .build();
+        var car1 = new Car(1L,
+                brandRepository.findById(1L).get(),
+                modelRepository.findById(1L).get(),
+                "Vin123",
+                111111L,
+                2016,
+                null,
+                null,
+                null,
+                null);
         var carAdded = carRepository.create(car1);
-        var car2 = Car.builder()
-                .id(carAdded.getId())
-                .brand("subaru")
-                .model("impreza")
-                .vinNumber("Vin123")
-                .colour("black")
-                .bodyType("universal")
-                .build();
+        var car2 = new Car(
+                1L,
+                new Brand(1L, "Renault"),
+                new Model(1L, "Duster", 1),
+                "Vin123",
+                111111L,
+                2016,
+                null,
+                null,
+                null,
+                null);
         carRepository.update(car2);
         var carUpdate = carRepository.findById(carAdded.getId());
         assertThat(carUpdate.get().getModel()).isEqualTo(car2.getModel());
@@ -86,13 +103,17 @@ class HibernateCarRepositoryTest {
 
     @Test
     void whenDeleteIsDone() {
-        var car1 = Car.builder()
-                .brand("subaru")
-                .model("outback")
-                .vinNumber("Vin123")
-                .colour("black")
-                .bodyType("universal")
-                .build();
+        var car1 = new Car(
+                1L,
+                new Brand(1L, "Renault"),
+                new Model(1L, "Duster", 1),
+                "Vin123",
+                111111L,
+                2016,
+                null,
+                null,
+                null,
+                null);
         var carAdded = carRepository.create(car1);
         carRepository.delete(carAdded.getId());
         carRepository.findById(carAdded.getId());
@@ -101,21 +122,29 @@ class HibernateCarRepositoryTest {
 
     @Test
     void whenFindAllIsDone() {
-        var car1 = Car.builder()
-                .brand("subaru")
-                .model("outback")
-                .vinNumber("Vin123")
-                .colour("black")
-                .bodyType("universal")
-                .build();
+        var car1 = new Car(
+                1L,
+                new Brand(1L, "Renault"),
+                new Model(1L, "Duster", 1),
+                "Vin123",
+                111111L,
+                2016,
+                null,
+                null,
+                null,
+                null);
 
-        var car2 = Car.builder()
-                .brand("Citroen")
-                .model("C4")
-                .vinNumber("Vin2324")
-                .colour("black")
-                .bodyType("hatchback")
-                .build();
+        var car2 = new Car(
+                1L,
+                new Brand(1L, "Renault"),
+                new Model(1L, "Duster", 1),
+                "Vin123",
+                111111L,
+                2016,
+                null,
+                null,
+                null,
+                null);
         var carAdded1 = carRepository.create(car1);
         var carAdded2 = carRepository.create(car2);
         var carsAdded = carRepository.findAll();

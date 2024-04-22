@@ -1,25 +1,24 @@
 package ru.job4j.cars.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "auto_photo")
+@Table(name = "brand")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class AutoPhoto {
+public class Brand {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Long id;
-    private String name;
-    private String path;
 
-    public AutoPhoto(String name, String path) {
-        this.name = name;
-        this.path = path;
-    }
+    private String name;
+
 }

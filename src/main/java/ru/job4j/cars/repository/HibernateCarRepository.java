@@ -15,7 +15,7 @@ public class HibernateCarRepository implements CarRepository {
 
     @Override
     public Car create(Car car) {
-        crudRepository.run(session -> session.persist(car));
+        crudRepository.run(session -> session.save(car));
         return car;
     }
 
@@ -25,7 +25,7 @@ public class HibernateCarRepository implements CarRepository {
     }
 
     @Override
-    public void delete(int carId) {
+    public void delete(Long carId) {
         crudRepository.run(
                 "delete from Car where id = :fId",
                 Map.of("fId", carId)
@@ -38,7 +38,7 @@ public class HibernateCarRepository implements CarRepository {
     }
 
     @Override
-    public Optional<Car> findById(int carId) {
+    public Optional<Car> findById(Long carId) {
         return crudRepository.optional("FROM Car WHERE id = :fId", Car.class,
                 Map.of("fId", carId)
         );

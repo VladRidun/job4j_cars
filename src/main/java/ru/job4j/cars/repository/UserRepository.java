@@ -11,11 +11,11 @@ public interface UserRepository {
 
     void update(User user);
 
-    void delete(int userId);
+    void delete(Long userId);
 
     List<User> findAllOrderById();
 
-    Optional<User> findById(int userId);
+    Optional<User> findById(Long userId);
 
     List<User> findByLikeLogin(String key);
 

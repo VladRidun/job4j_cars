@@ -24,7 +24,7 @@ public class HibernateCarService implements CarService {
     }
 
     @Override
-    public void delete(int carId) {
+    public void delete(Long carId) {
         carRepository.delete(carId);
     }
 
@@ -34,7 +34,7 @@ public class HibernateCarService implements CarService {
     }
 
     @Override
-    public Optional<Car> findById(int carId) {
+    public Optional<Car> findById(Long carId) {
         return carRepository.findById(carId);
     }
 }

@@ -13,11 +13,11 @@ public interface PostService {
 
     void update(Post post, AutoPhotoDto photoDto);
 
-    void delete(int taskId);
+    void delete(Long postId);
 
     List<Post> findAllOrderById();
 
-    Optional<Post> findById(int postId);
+    Optional<Post> findById(Long postId);
 
     List<Post> getLastDayPosts();
 

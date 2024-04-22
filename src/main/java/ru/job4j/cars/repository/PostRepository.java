@@ -11,11 +11,11 @@ public interface PostRepository {
 
     void update(Post post);
 
-    void delete(int taskId);
+    void delete(Long postId);
 
     List<Post> findAllOrderById();
 
-    Optional<Post> findById(int taskId);
+    Optional<Post> findById(Long postId);
 
     List<Post> getLastDayPosts();
 

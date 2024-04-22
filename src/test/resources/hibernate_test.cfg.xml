@@ -8,18 +8,17 @@
         <property name="hibernate.connection.url">jdbc:h2:mem:testdb;MODE=PostgreSQL;CASE_INSENSITIVE_IDENTIFIERS=TRUE;</property>
         <property name="hibernate.connection.username"></property>
         <property name="hibernate.connection.password"></property>
-        <property name="hibernate.connection.pool_size">10</property>
-        <property name="hibernate.current_session_context_class">thread</property>
+        <property name="hibernate.connection.pool_size">300</property>
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.dialect">org.hibernate.dialect.H2Dialect</property>
         <property name="hibernate.hbm2ddl.auto">create-drop</property>
         <property name="hibernate.current_session_context_class">thread</property>
 
         <mapping class="ru.job4j.cars.model.User" />
-        <mapping class="ru.job4j.cars.model.Post" />
+        <mapping class="ru.job4j.cars.model.Brand" />
+        <mapping class="ru.job4j.cars.model.Model" />
         <mapping class="ru.job4j.cars.model.Car" />
-        <mapping class="ru.job4j.cars.model.Engine" />
-        <mapping class="ru.job4j.cars.model.Owner" />
         <mapping class="ru.job4j.cars.model.AutoPhoto" />
+        <mapping class="ru.job4j.cars.model.Post" />
     </session-factory>
 </hibernate-configuration>

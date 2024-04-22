@@ -5,8 +5,8 @@ create table auto_post
     description   varchar not null,
     created       TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
     price BIGINT not null,
-    active BOOLEAN,
+    sold BOOLEAN DEFAULT FALSE,
     auto_user_id  int references auto_user(id),
-    car_id int not null references car(id),
+    car_id int references car(id),
     auto_photo_id int references auto_photo(id)
 );

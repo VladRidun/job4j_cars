@@ -10,9 +10,9 @@ public interface CarRepository {
 
     void update(Car car);
 
-    void delete(int carId);
+    void delete(Long carId);
 
     List<Car> findAll();
 
-    Optional<Car> findById(int carId);
+    Optional<Car> findById(Long carId);
 }

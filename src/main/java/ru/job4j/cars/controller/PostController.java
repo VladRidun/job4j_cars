@@ -6,11 +6,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.job4j.cars.dto.AutoPhotoDto;
-import ru.job4j.cars.model.AutoPhoto;
-import ru.job4j.cars.model.Car;
-import ru.job4j.cars.model.Post;
-import ru.job4j.cars.model.User;
+import ru.job4j.cars.model.*;
 import ru.job4j.cars.service.AutoPhotoService;
+import ru.job4j.cars.service.BrandService;
+import ru.job4j.cars.service.ModelService;
 import ru.job4j.cars.service.PostService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,11 +21,13 @@ import java.io.IOException;
 @RequestMapping("/posts")
 public class PostController {
 
-    private PostService postService;
+    private final PostService postService;
     private final AutoPhotoService photoService;
+    private final BrandService brandService;
+    private final ModelService modelService;
 
     @GetMapping("/{postId}")
-    public String getPostById(Model model, @PathVariable int postId, HttpServletRequest request) {
+    public String getPostById(Model model, @PathVariable Long postId, HttpServletRequest request) {
         var postOptional = postService.findById(postId);
         if (postOptional.isEmpty()) {
             model.addAttribute("message", "Объявление не найдено");
@@ -56,23 +57,35 @@ public class PostController {
     @GetMapping("/create")
     public String getCreationPage(Model model, HttpSession session) {
         var user = (User) session.getAttribute("user");
+        model.addAttribute("brands", brandService.findAll());
+        model.addAttribute("models", modelService.findAll());
+        model.addAttribute("engines", Engine.values());
+        model.addAttribute("transmissions", Transmission.values());
+        model.addAttribute("bodyTypes", BodyType.values());
+        model.addAttribute("colours", Colour.values());
         return "posts/create";
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable int id) {
+    public String delete(@PathVariable Long id) {
         postService.delete(id);
         return "redirect:/posts";
     }
 
     @GetMapping("/edit/{id}")
-    public String getEditPage(@PathVariable int id, Model model) {
+    public String getEditPage(@PathVariable Long id, Model model) {
         var postOptional = postService.findById(id);
         var file = postOptional.get().getAutoPhoto().getId();
         if (postOptional.isEmpty()) {
             model.addAttribute("message", "Объявление не найдено");
             return "errors/404";
         }
+        model.addAttribute("brands", brandService.findAll());
+        model.addAttribute("models", modelService.findAll());
+        model.addAttribute("engines", Engine.values());
+        model.addAttribute("transmissions", Transmission.values());
+        model.addAttribute("bodyTypes", BodyType.values());
+        model.addAttribute("colours", Colour.values());
         model.addAttribute("post", postOptional.get());
         model.addAttribute("file", postOptional.get());
         return "posts/update";
@@ -103,7 +116,7 @@ public class PostController {
     }
 
     @GetMapping("/done/{id}")
-    public String getPageTaskIsDone(Model model, @RequestParam MultipartFile file, @PathVariable int id) throws IOException {
+    public String getPageTaskIsDone(Model model, @RequestParam MultipartFile file, @PathVariable Long id) throws IOException {
         var taskOptional = postService.findById(id);
         if (taskOptional.isEmpty()) {
             model.addAttribute("message", "Объявление не найдено");

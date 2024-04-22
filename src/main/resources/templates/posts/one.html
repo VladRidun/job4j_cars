@@ -14,7 +14,7 @@
             integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
-    <title>Задача </title>
+    <title >post.title</title>
 </head>
 
 <body>
@@ -22,27 +22,40 @@
     <header th:insert="blocks/header :: header"></header>
     <div class="container">
         <table class="table">
-
             <thead>
             <tr>
-                <th class="col-1">#</th>
-                <th class="col-3">Заголовок</th>
-                <th class="col-3">Фото</th>
-                <th class="col-3">Марка</th>
-                <th class="col-3">Модель</th>
-                <th class="col-3">Дата добаления</th>
-                <th class="col-3">Активное</th>
+                <th class="col-1 text-center">#</th>
+                <th class="col-3 text-center">Фото</th>
+                <th class="col-4 p-2 text-center">Заголовок</th>
+                <th class="col-1">Марка</th>
+                <th class="col-1">Модель</th>
+                <th class="col-1">Тип кузова</th>
+                <th class="col-1">Цвет</th>
+                <th class="col-1">Двигатель</th>
+                <th class="col-1">Коробка передач</th>
+                <th class="col-1">Год выпуска</th>
+                <th class="col-1">Пробег</th>
+                <th class="col-1">Описание</th>
+                <th class="col-2">Дата добавления</th>
+                <th class="col-2">Продано</th>
             </tr>
             </thead>
             <tbody>
             <td><span th:text="${post.id}"></span></td>
-            <td><span th:text="${post.title}"></span></td>
             <td><img th:src="@{/photos/{/photoId}(photoId=${post.autoPhoto.id})}" class="w-100" alt="No image" ></span></td>
-            <td><span th:text="${post.car.brand}"></span></td>
-            <td><span th:text="${post.car.model}"></span></td>
+            <td><span th:text="${post.title}"></span></td>
+            <td><span th:text="${post.car.brand.name}"></span></td>
+            <td><span th:text="${post.car.model.name}"></span></td>
+            <td><span th:text="${post.car.bodyType.getDisplayName()}"></span></td>
+            <td><span th:text="${post.car.colour.getDisplayName()}"></span></td>
+            <td><span th:text="${post.car.engine.getDisplayName()}"></span></td>
+            <td><span th:text="${post.car.transmission.getDisplayName()}"></span></td>
+            <td><span th:text="${post.car.year}"></span></td>
+            <td><span th:text="${post.car.mileage}"></span></td>
+            <td><span th:text="${post.description}"></span></td>
             <td><span th:text="${#temporals.format(post.created, 'HH:mm dd-MM-yyyy')}"></span></td>
-            <td><span th:if="${post.active}"><i class="bi bi-check-square"></i></span>
-                <span th:if="${!post.active}"><i class="bi bi-square"></i></span>
+            <td><span th:if="${post.sold}"><i class="bi bi-check-square"></i></span>
+                <span th:if="${!post.sold}"><i class="bi bi-square"></i></span>
             </td>
             </div>
             </tbody>

@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import ru.job4j.cars.service.AutoPhotoService;
 
 @Controller
@@ -17,7 +16,7 @@ public class AutoPhotoController {
     private final AutoPhotoService photoService;
 
     @GetMapping("/{photoId}")
-    public ResponseEntity<?> getById(@PathVariable int photoId) {
+    public ResponseEntity<?> getById(@PathVariable Long photoId) {
         var contentOptional = photoService.getPhotoById(photoId);
         if (contentOptional.isEmpty()) {
             return ResponseEntity.notFound().build();

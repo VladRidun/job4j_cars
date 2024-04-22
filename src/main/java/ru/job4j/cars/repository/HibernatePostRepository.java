@@ -17,17 +17,17 @@ public class HibernatePostRepository implements PostRepository {
 
     @Override
     public Post create(Post post) {
-        crudRepository.run(session -> session.persist(post));
+        crudRepository.run(session -> session.save(post));
         return post;
     }
 
     @Override
     public void update(Post post) {
-        crudRepository.run(session -> session.merge(post));
+        crudRepository.run(session -> session.update(post));
     }
 
     @Override
-    public void delete(int postId) {
+    public void delete(Long postId) {
         crudRepository.run(
                 "delete from Post where id = :fId",
                 Map.of("fId", postId)
@@ -36,13 +36,13 @@ public class HibernatePostRepository implements PostRepository {
 
     @Override
     public List<Post> findAllOrderById() {
-        return crudRepository.query("from Post p join fetch p.car join fetch p.user join fetch p.autoPhoto p order by p.id", Post.class);
+        return crudRepository.query("from Post p order by p.id", Post.class);
     }
 
     @Override
-    public Optional<Post> findById(int taskId) {
+    public Optional<Post> findById(Long postId) {
         return crudRepository.optional("FROM Post p join fetch p.car WHERE p.id = :fId", Post.class,
-                Map.of("fId", taskId)
+                Map.of("fId", postId)
         );
     }
 

@@ -36,7 +36,7 @@ public class HibernatePostService implements PostService {
     }
 
     @Override
-    public void delete(int postId) {
+    public void delete(Long postId) {
         postRepository.delete(postId);
     }
 
@@ -46,8 +46,8 @@ public class HibernatePostService implements PostService {
     }
 
     @Override
-    public Optional<Post> findById(int taskId) {
-        return postRepository.findById(taskId);
+    public Optional<Post> findById(Long postId) {
+        return postRepository.findById(postId);
     }
 
     @Override

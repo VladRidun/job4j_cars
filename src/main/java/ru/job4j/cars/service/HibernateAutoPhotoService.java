@@ -41,7 +41,7 @@ public class HibernateAutoPhotoService implements AutoPhotoService {
     }
 
     @Override
-    public Optional<AutoPhotoDto> getPhotoById(int id) {
+    public Optional<AutoPhotoDto> getPhotoById(Long id) {
         var photoOptional = photoRepository.findById(id);
         if (photoOptional.isEmpty()) {
             return Optional.empty();
@@ -71,7 +71,7 @@ public class HibernateAutoPhotoService implements AutoPhotoService {
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(Long id) {
         var fileOptional = photoRepository.findById(id);
         if (fileOptional.isPresent()) {
             deleteFile(fileOptional.get().getPath());

@@ -25,23 +25,24 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th class="col-1">#</th>
-                    <th class="col-3">Фото</th>
-                    <th class="col-3">Заголовок</th>
-                    <th class="col-3">Марка</th>
-                    <th class="col-3">Модель</th>
-                    <th class="col-3">Цена</th>
+                    <th class="col-6 text-center">Фото</th>
+                    <th class="col-3 text-center">Заголовок</th>
+                    <th class="col-3 text-center">Марка</th>
+                    <th class="col-3 text-center">Модель</th>
+                    <th class="col-4 text-center">Цена</th>
+                    <th class="col-3 text-center" >Статус объявления</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="post: ${posts}">
-                    <td><span th:text="${post.id}"></span></td>
-                    <td><img th:src="@{/photos/{/photoId}(photoId=${post.autoPhoto.id})}" class="w-100" alt="No image" ></span></td>
-                    <td><a style="color: Blue; text-decoration: none;" th:text="${post.title}"
+                    <td class="text-center"><img th:src="@{/photos/{/photoId}(photoId=${post.autoPhoto.id})}" class="w-100" alt="No image" ></span></td>
+                    <td class="text-center"><a style="color: Blue; text-decoration: none;" th:text="${post.title}"
                            th:href="@{/posts/{id}(id=${post.id})}"></span></a></td>
-                    <td><span th:text="${post.car.brand}"></span></td>
-                    <td><span th:text="${post.car.model}"></span></td>
-                    <td><span th:text="${post.price}"></span></td>
+                    <td class="text-center"><span th:text="${post.car.brand.name}"></span></td>
+                    <td class="text-center"><span th:text="${post.car.model.name}"></span></td>
+                    <td class="text-center"><span th:text="${post.price}"></span></td>
+                    <td class="text-center"><span th:if="${post.sold}">Снято с продажи</span>
+                        <span th:if="${!post.sold}">Активно</span>
                 </tr>
                 </tbody>
             </table>

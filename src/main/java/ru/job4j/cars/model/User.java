@@ -1,10 +1,12 @@
 package ru.job4j.cars.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.EqualsAndHashCode.Include;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "auto_user")
@@ -16,7 +18,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Include
-    private int id;
+    private Long id;
     @Column(name = "login")
     private String login;
     @Column(name = "password")

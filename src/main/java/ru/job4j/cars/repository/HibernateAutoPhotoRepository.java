@@ -14,19 +14,19 @@ public class HibernateAutoPhotoRepository implements AutoPhotoRepository {
 
     @Override
     public AutoPhoto save(AutoPhoto file) {
-        crudRepository.run(session -> session.persist(file));
+        crudRepository.run(session -> session.save(file));
         return file;
     }
 
     @Override
-    public Optional<AutoPhoto> findById(int id) {
+    public Optional<AutoPhoto> findById(Long id) {
         return crudRepository.optional("FROM AutoPhoto WHERE id = :fId", AutoPhoto.class,
                 Map.of("fId", id)
         );
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(Long id) {
         crudRepository.run("delete from AutoFoto where id = :fId",
                 Map.of("fId", id)
         );

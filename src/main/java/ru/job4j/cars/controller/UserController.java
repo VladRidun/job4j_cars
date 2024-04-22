@@ -31,9 +31,10 @@ public class UserController {
         var savedUser = userService.create(user);
         if (savedUser.isEmpty()) {
             model.addAttribute("error", "Пользователь уже существует");
-            return "users/register";
+            return "errors/404";
         }
-        return "redirect:/posts";
+        model.addAttribute("message", "Пользователь зарегистрирован");
+        return "redirect:/users/success";
     }
 
     @GetMapping({"/login"})
@@ -46,7 +47,7 @@ public class UserController {
         var userOptional = userService.findByLoginAndPassword(user.getLogin(), user.getPassword());
         if (userOptional.isEmpty()) {
             model.addAttribute("error", "Почта или пароль введены неверно");
-            return "users/login";
+            return "errors/404";
         }
         var session = request.getSession();
         session.setAttribute("user", userOptional.get());
