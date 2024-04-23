@@ -17,7 +17,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 
 class HibernatePostRepositoryTest {
-
     private static SessionFactory sf;
     private static HibernatePostRepository postRepository;
     private static HibernateCarRepository carRepository;
@@ -81,7 +80,6 @@ class HibernatePostRepositoryTest {
             session.getTransaction().rollback();
         }
     }
-
 
     @Test
     void whenCreatePostAndGetSame() {

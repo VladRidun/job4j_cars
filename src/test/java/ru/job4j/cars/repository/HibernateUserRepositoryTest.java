@@ -80,13 +80,12 @@ class HibernateUserRepositoryTest {
         assertThat(userListTest).isEqualTo(usersListGet);
     }
 
-
     @Test
     void whenFindByLikeLoginTrueIsTrue() {
         userRepository.create(new User(1L, "Admin", "qwerty"));
         userRepository.create(new User(2L, "User", "12345"));
         userRepository.create(new User(3L, "User", "666666"));
-       assertThat(userRepository.findByLikeLogin("User").size()).isEqualTo(2);
+        assertThat(userRepository.findByLikeLogin("User").size()).isEqualTo(2);
     }
 
     @Test
