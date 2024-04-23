@@ -15,7 +15,6 @@ import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-
 class HibernatePostRepositoryTest {
     private static SessionFactory sf;
     private static HibernatePostRepository postRepository;
@@ -146,7 +145,7 @@ class HibernatePostRepositoryTest {
                 userRepository.findById(1L).get());
         postRepository.create(post1);
         postRepository.delete(1L);
-        assertThat(postRepository.findById(1l)).isEmpty();
+        assertThat(postRepository.findById(1L)).isEmpty();
     }
 
     @Test
